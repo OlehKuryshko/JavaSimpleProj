@@ -9,9 +9,9 @@ build:
   script: 
     - cd /d/study/SoftServe/Video/lesson 4 first project/project/git/JavaSimpleProj/
     - mvn clean package
-  artifacts:
-    paths:
-      - com.*
+  # artifacts:
+  #   paths:
+  #     - com.*
 # execute:
 #   stage: execute
 #   script: java -jar 
