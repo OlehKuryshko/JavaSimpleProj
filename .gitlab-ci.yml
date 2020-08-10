@@ -1,0 +1,17 @@
+image: maven:latest
+
+stages:
+  - build
+  - execute
+
+build:
+  stage: build
+  script: 
+    - cd /d/study/SoftServe/Video/lesson 4 first project/project/git/JavaSimpleProj/
+    - mvn clean package
+  artifacts:
+    paths:
+      - com.*
+# execute:
+#   stage: execute
+#   script: java -jar 
