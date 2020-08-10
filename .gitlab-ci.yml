@@ -1,17 +1,31 @@
-image: maven:latest
+image: centos:latest
 
-stages:
-  - build
-  - execute
+before_script:
+  - sudo yum update -y
+  - sudo yum install git wget java-1.8.0-openjdk-devel -y
+  - wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
+  - sudo tar xf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt
+  - sudo ln -s /opt/apache-maven-3.6.3/ /opt/maven
+  - cat <<_EOF >maven.sh
+    export JAVA_HOME=/usr/lib/jvm/jre-openjdk
+    export M2_HOME=/opt/maven
+    export MAVEN_HOME=/opt/maven
+    export PATH=/opt/apache-maven-3.6.3/bin:$PATH
+_EOF
+  - chmod 777 maven.sh
+  - sudo mv maven.sh /etc/profile.d/maven.sh
+  - source /etc/profile.d/maven.sh
+  - sudo setenforce 0
+  - sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
-build:
+after_script:
+  - echo "After script section"
+  - echo "For example you might do some cleanup here"
+
+build1:
   stage: build
-  script: 
-    - cd /d/study/SoftServe/Video/lesson 4 first project/project/git/JavaSimpleProj/
-    - mvn clean package
-  # artifacts:
-  #   paths:
-  #     - com.*
-# execute:
-#   stage: execute
-#   script: java -jar 
+  script:
+  - git clone  https://github.com/OlehKuryshko/JavaSimpleProj.git
+  - cd JavaSimpleProjl/
+  - mvn clean package
+
